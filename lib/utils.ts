@@ -43,7 +43,6 @@ export function getStatusColor(status: string): string {
         'New Leads': 'slate',
         'Contacted': 'blue',
         'Qualified': 'emerald',
-        'Proposal': 'indigo',
         'Second Wing': 'amber',
         'Closed Won': 'green',
         'Closed Lost': 'rose',

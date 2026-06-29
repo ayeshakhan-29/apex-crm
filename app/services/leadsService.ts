@@ -5,7 +5,7 @@ export interface Lead {
     name: string;
     phone: string;
     email?: string;
-    stage: 'New' | 'Incoming' | 'Contacted' | 'Qualified' | 'Proposal' | 'Second Wing' | 'Won' | 'Lost';
+    stage: 'New' | 'Incoming' | 'Contacted' | 'Qualified' | 'Second Wing' | 'Won' | 'Lost';
     source: 'WhatsApp' | 'Facebook' | 'Instagram' | 'Website' | 'Referral' | 'Cold Call' | 'Email' | 'Social Media' | 'Other';
     last_message?: string;
     last_message_at?: string;

@@ -41,7 +41,6 @@ export default function AddLeadPage() {
         'New Leads',
         'Contacted',
         'Qualified',
-        'Proposal',
         'Second Wing',
         'Closed Won',
         'Closed Lost',

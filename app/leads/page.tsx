@@ -111,8 +111,7 @@ export default function LeadsPage() {
                                             { value: 'Incoming', label: 'Incoming' },
                                             { value: 'Contacted', label: 'Contacted' },
                                             { value: 'Qualified', label: 'Qualified' },
-                                            { value: 'Proposal', label: 'Second Wing' },
-                                            { value: 'Second Wing', label: 'Second Wing (Alt)' },
+                                            { value: 'Second Wing', label: 'Second Wing' },
                                             { value: 'Won', label: 'Won' },
                                             { value: 'Lost', label: 'Lost' },
                                         ].map((opt) => (

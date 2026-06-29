@@ -17,12 +17,13 @@ interface ExcelLeadImportProps {
     onImportComplete: (count: number) => void;
 }
 
-const VALID_STAGES = ['New', 'Incoming', 'Contacted', 'Qualified', 'Proposal', 'Second Wing', 'Won', 'Lost'];
+const VALID_STAGES = ['New', 'Incoming', 'Contacted', 'Qualified', 'Second Wing', 'Won', 'Lost'];
 const VALID_SOURCES = ['WhatsApp', 'Facebook', 'Instagram', 'Website', 'Referral', 'Cold Call', 'Email', 'Social Media', 'Other'];
 
 function normalizeStage(val: string): string {
     if (!val) return 'New';
     const cleaned = val.trim();
+    if (cleaned.toLowerCase() === 'proposal') return 'Second Wing';
     const match = VALID_STAGES.find(s => s.toLowerCase() === cleaned.toLowerCase());
     return match || 'New';
 }
