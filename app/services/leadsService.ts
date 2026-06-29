@@ -142,3 +142,11 @@ export const deleteLead = async (id: number): Promise<{ success: boolean; messag
     const response = await api.delete(`/leads/${id}`);
     return response.data;
 };
+
+/**
+ * Delete multiple leads
+ */
+export const deleteLeads = async (ids: number[]): Promise<{ success: boolean; message: string; deletedCount: number }> => {
+    const response = await api.delete('/leads', { data: { ids } });
+    return response.data;
+};
