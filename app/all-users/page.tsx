@@ -74,7 +74,7 @@ export default function AllUsersPage() {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <Header title="User Directory" onMenuClick={() => setSidebarOpen(true)} />
 
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-12">
+                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-8 lg:p-12">
                     <div className="max-w-6xl mx-auto">
                         {/* Page Header */}
                          <div className="mb-10">
@@ -112,84 +112,129 @@ export default function AllUsersPage() {
 
                         {/* Users Table */}
                         {!loading && !error && (
-                            <div className="glass-card overflow-hidden">
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-full divide-y divide-border">
-                                         <thead className="bg-slate-50/50">
-                                             <tr>
-                                                 <th className="px-8 py-5 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                                     User Identity
-                                                 </th>
-                                                 <th className="px-8 py-5 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                                     Auth Email
-                                                 </th>
-                                                 <th className="px-8 py-5 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                                     Clearance Level
-                                                 </th>
-                                                 <th className="px-8 py-5 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                                     Deployment Date
-                                                 </th>
-                                                 <th className="px-8 py-5 text-right text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                                     Termination
-                                                 </th>
-                                             </tr>
-                                         </thead>
-                                         <tbody className="bg-white divide-y divide-slate-50">
-                                            {users.length === 0 ? (
-                                                <tr>
-                                                    <td colSpan={5} className="px-8 py-16 text-center">
-                                                        <UsersIcon className="h-10 w-10 text-slate-200 mx-auto mb-4" />
-                                                        <p className="text-xs text-slate-400 font-bold">No users found</p>
-                                                    </td>
-                                                </tr>
-                                            ) : (
-                                                users.map((user) => (
-                                                    <tr key={user.id} className="hover:bg-slate-50/50 transition-colors group">
-                                                        <td className="px-8 py-5 whitespace-nowrap">
-                                                            <div className="flex items-center">
-                                                                <div className="h-9 w-9 flex-shrink-0">
-                                                                    <div className="h-9 w-9 rounded-lg bg-slate-50 border border-border flex items-center justify-center group-hover:border-primary transition-all">
-                                                                        <span className="text-[11px] font-bold text-[#1A1A1A] group-hover:text-primary">
-                                                                            {user.name.charAt(0).toUpperCase()}
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="ml-4">
-                                                                    <div className="text-xs font-bold text-[#1A1A1A]">
-                                                                        {user.name}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-8 py-5 whitespace-nowrap">
-                                                            <div className="text-[11px] font-medium text-slate-500">{user.email}</div>
-                                                        </td>
-                                                        <td className="px-8 py-5 whitespace-nowrap">
-                                                            {getRoleBadge(user.role)}
-                                                        </td>
-                                                        <td className="px-8 py-5 whitespace-nowrap text-xs font-medium text-slate-500">
-                                                            {new Date(user.created_at).toLocaleDateString()}
-                                                        </td>
-                                                        <td className="px-8 py-5 whitespace-nowrap text-right text-[10px] font-medium">
-                                                            <button
-                                                                onClick={() => handleDelete(user.id)}
-                                                                disabled={deletingId === user.id}
-                                                                className="text-danger hover:scale-110 disabled:opacity-30 transition-all inline-flex items-center"
-                                                            >
-                                                                {deletingId === user.id ? (
-                                                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                                                ) : (
-                                                                    <Trash2 className="h-4 w-4" />
-                                                                )}
-                                                            </button>
+                            <>
+                                {/* Table view for desktop */}
+                                <div className="glass-card overflow-hidden hidden md:block">
+                                    <div className="overflow-x-auto">
+                                        <table className="min-w-full divide-y divide-border">
+                                             <thead className="bg-slate-50/50">
+                                                 <tr>
+                                                     <th className="px-8 py-5 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                                         User Identity
+                                                     </th>
+                                                     <th className="px-8 py-5 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                                         Auth Email
+                                                     </th>
+                                                     <th className="px-8 py-5 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                                         Clearance Level
+                                                     </th>
+                                                     <th className="px-8 py-5 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                                         Deployment Date
+                                                     </th>
+                                                     <th className="px-8 py-5 text-right text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                                         Termination
+                                                     </th>
+                                                 </tr>
+                                             </thead>
+                                             <tbody className="bg-white divide-y divide-slate-50">
+                                                {users.length === 0 ? (
+                                                    <tr>
+                                                        <td colSpan={5} className="px-8 py-16 text-center">
+                                                            <UsersIcon className="h-10 w-10 text-slate-200 mx-auto mb-4" />
+                                                            <p className="text-xs text-slate-400 font-bold">No users found</p>
                                                         </td>
                                                     </tr>
-                                                ))
-                                            )}
-                                        </tbody>
-                                    </table>
+                                                ) : (
+                                                    users.map((user) => (
+                                                        <tr key={user.id} className="hover:bg-slate-50/50 transition-colors group">
+                                                            <td className="px-8 py-5 whitespace-nowrap">
+                                                                <div className="flex items-center">
+                                                                    <div className="h-9 w-9 flex-shrink-0">
+                                                                        <div className="h-9 w-9 rounded-lg bg-slate-50 border border-border flex items-center justify-center group-hover:border-primary transition-all">
+                                                                            <span className="text-[11px] font-bold text-[#1A1A1A] group-hover:text-primary">
+                                                                                {user.name.charAt(0).toUpperCase()}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="ml-4">
+                                                                        <div className="text-xs font-bold text-[#1A1A1A]">
+                                                                            {user.name}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-8 py-5 whitespace-nowrap">
+                                                                <div className="text-[11px] font-medium text-slate-500">{user.email}</div>
+                                                            </td>
+                                                            <td className="px-8 py-5 whitespace-nowrap">
+                                                                {getRoleBadge(user.role)}
+                                                            </td>
+                                                            <td className="px-8 py-5 whitespace-nowrap text-xs font-medium text-slate-500">
+                                                                {new Date(user.created_at).toLocaleDateString()}
+                                                            </td>
+                                                            <td className="px-8 py-5 whitespace-nowrap text-right text-[10px] font-medium">
+                                                                <button
+                                                                    onClick={() => handleDelete(user.id)}
+                                                                    disabled={deletingId === user.id}
+                                                                    className="text-danger hover:scale-110 disabled:opacity-30 transition-all inline-flex items-center"
+                                                                >
+                                                                    {deletingId === user.id ? (
+                                                                        <Loader2 className="h-3 w-3 animate-spin" />
+                                                                    ) : (
+                                                                        <Trash2 className="h-4 w-4" />
+                                                                    )}
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                )}
+                                             </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
+
+                                {/* Card view for mobile */}
+                                <div className="md:hidden space-y-4">
+                                    {users.length === 0 ? (
+                                        <div className="glass-card p-8 text-center text-slate-500 text-xs">
+                                            <UsersIcon className="h-10 w-10 text-slate-200 mx-auto mb-4" />
+                                            <p className="font-bold">No users found</p>
+                                        </div>
+                                    ) : (
+                                        users.map((user) => (
+                                            <div key={user.id} className="glass-card p-5 space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center space-x-3">
+                                                        <div className="h-8 w-8 rounded-lg bg-slate-50 border border-border flex items-center justify-center">
+                                                            <span className="text-[10px] font-bold text-[#1A1A1A]">
+                                                                {user.name.charAt(0).toUpperCase()}
+                                                            </span>
+                                                        </div>
+                                                        <div className="text-xs font-bold text-[#1A1A1A]">{user.name}</div>
+                                                    </div>
+                                                    <div>{getRoleBadge(user.role)}</div>
+                                                </div>
+                                                <div className="text-[11px] text-slate-500 font-medium break-all">{user.email}</div>
+                                                <div className="flex items-center justify-between pt-3 border-t border-slate-50">
+                                                    <span className="text-[10px] text-slate-400 font-medium">Joined: {new Date(user.created_at).toLocaleDateString()}</span>
+                                                    <button
+                                                        onClick={() => handleDelete(user.id)}
+                                                        disabled={deletingId === user.id}
+                                                        className="text-danger hover:scale-110 disabled:opacity-30 transition-all p-1"
+                                                        title="Delete user"
+                                                    >
+                                                        {deletingId === user.id ? (
+                                                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                                        ) : (
+                                                            <Trash2 className="h-4 w-4" />
+                                                        )}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </>
                         )}
                     </div>
                 </main>

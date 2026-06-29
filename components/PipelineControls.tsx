@@ -34,12 +34,12 @@ export default function PipelineControls({
                 </div>
             </div>
             
-            <div className="flex items-center space-x-3">
+            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
                 {/* Refresh Button */}
                 <button
                     onClick={onRefresh}
                     disabled={isRefreshing}
-                    className="flex items-center space-x-3 px-6 py-2.5 bg-white border border-slate-100 text-[10px] font-bold uppercase tracking-widest text-slate-600 hover:text-slate-900 hover:shadow-md rounded-xl transition-all disabled:opacity-50"
+                    className="flex items-center space-x-3 px-4 sm:px-6 py-2.5 bg-white border border-slate-100 text-[10px] font-bold uppercase tracking-widest text-slate-600 hover:text-slate-900 hover:shadow-md rounded-xl transition-all disabled:opacity-50"
                 >
                     <RefreshCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
                     <span>Synchronize</span>
@@ -48,16 +48,16 @@ export default function PipelineControls({
                 {/* Filters Toggle */}
                 <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className="flex items-center space-x-3 px-6 py-2.5 bg-white border border-slate-100 text-[10px] font-bold uppercase tracking-widest text-slate-600 hover:text-slate-900 hover:shadow-md rounded-xl transition-all"
+                    className="flex items-center space-x-3 px-4 sm:px-6 py-2.5 bg-white border border-slate-100 text-[10px] font-bold uppercase tracking-widest text-slate-600 hover:text-slate-900 hover:shadow-md rounded-xl transition-all"
                 >
                     <Filter className="h-3.5 w-3.5" />
                     <span>Filter View</span>
                 </button>
 
-                <div className="h-4 w-[1px] bg-slate-100 mx-1"></div>
+                <div className="hidden sm:block h-4 w-[1px] bg-slate-100 mx-1"></div>
 
                 {/* Drag & Drop Toggle */}
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center">
                     <button
                         onClick={() => onToggleDrag(!isDragEnabled)}
                         className={`flex items-center space-x-3 px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${

@@ -159,7 +159,7 @@ export default function AddLeadPage() {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <Header title="Add New Lead" onMenuClick={() => setSidebarOpen(true)} />
 
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-12">
+                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-8 lg:p-12">
                     <div className="max-w-4xl mx-auto">
                         {/* Back Button */}
                         <button

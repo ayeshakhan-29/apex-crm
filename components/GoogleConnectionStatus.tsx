@@ -97,14 +97,14 @@ export default function GoogleConnectionStatus({ onConnectionChange }: GoogleCon
 
     if (error) {
         return (
-            <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center space-x-2">
                     <AlertCircle className="h-4 w-4 text-red-500" />
                     <span className="text-sm text-red-700">{error}</span>
                 </div>
                 <button
                     onClick={checkConnectionStatus}
-                    className="text-sm text-red-600 hover:text-red-800 underline"
+                    className="text-sm text-red-600 hover:text-red-800 underline self-start sm:self-auto"
                 >
                     Retry
                 </button>
@@ -114,14 +114,14 @@ export default function GoogleConnectionStatus({ onConnectionChange }: GoogleCon
 
     if (isConnected) {
         return (
-            <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-green-50 border border-green-200 rounded-lg">
                 <div className="flex items-center space-x-2">
                     <CheckCircle className="h-4 w-4 text-green-500" />
                     <span className="text-sm text-green-700">Google Calendar connected</span>
                 </div>
                 <button
                     onClick={handleDisconnect}
-                    className="text-sm text-green-600 hover:text-green-800 underline"
+                    className="text-sm text-green-600 hover:text-green-800 underline self-start sm:self-auto"
                 >
                     Disconnect
                 </button>
@@ -130,7 +130,7 @@ export default function GoogleConnectionStatus({ onConnectionChange }: GoogleCon
     }
 
     return (
-        <div className="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <div className="flex items-center space-x-2">
                 <AlertCircle className="h-4 w-4 text-yellow-500" />
                 <div>
@@ -140,7 +140,7 @@ export default function GoogleConnectionStatus({ onConnectionChange }: GoogleCon
             </div>
             <button
                 onClick={handleConnect}
-                className="flex items-center space-x-1 px-3 py-1.5 bg-teal-600 text-white text-sm rounded-md hover:bg-teal-700 transition-colors"
+                className="flex items-center space-x-1 px-3 py-1.5 bg-teal-600 text-white text-sm rounded-md hover:bg-teal-700 transition-colors self-start sm:self-auto"
             >
                 <ExternalLink className="h-3 w-3" />
                 <span>Connect Google</span>

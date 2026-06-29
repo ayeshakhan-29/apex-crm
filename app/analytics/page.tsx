@@ -67,7 +67,7 @@ export default function Analytics() {
         <Header title="Analytics Dashboard" onMenuClick={() => setSidebarOpen(true)} />
 
         {/* Analytics content */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-12">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-8 lg:p-12">
           {loading && (
             <div className="flex justify-center items-center h-64">
               <div className="text-slate-600">Loading analytics data...</div>
@@ -83,11 +83,11 @@ export default function Analytics() {
           {!loading && !error && (
             <>
               {/* Date Range and Actions */}
-              <div className="mb-6 flex items-center justify-between">
-                <div className="flex items-center space-x-2">
+              <div className="mb-6 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center sm:justify-between">
+                <div className="flex items-center space-x-2 w-full sm:w-auto">
                   <Calendar className="h-4 w-4 text-slate-400" />
                   <select
-                    className="px-4 py-2.5 text-xs font-semibold search-input bg-white appearance-none min-w-[180px]"
+                    className="px-4 py-2.5 text-xs font-semibold search-input bg-white appearance-none w-full sm:min-w-[180px]"
                     value={selectedPeriod}
                     onChange={(e) => setSelectedPeriod(e.target.value)}
                   >
@@ -96,12 +96,12 @@ export default function Analytics() {
                     <option value="1">Last 30 Days</option>
                   </select>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <button className="flex items-center px-6 py-2.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-hover transition-all shadow-lg shadow-blue-500/20">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                  <button className="flex-1 sm:flex-initial flex items-center justify-center px-6 py-2.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-hover transition-all shadow-lg shadow-blue-500/20">
                     <Filter className="h-3.5 w-3.5 mr-2" />
                     Filters
                   </button>
-                  <button className="flex items-center px-6 py-2.5 border border-slate-100 bg-white text-slate-900 text-xs font-bold rounded-xl hover:bg-slate-50 transition-all shadow-sm">
+                  <button className="flex-1 sm:flex-initial flex items-center justify-center px-6 py-2.5 border border-slate-100 bg-white text-slate-900 text-xs font-bold rounded-xl hover:bg-slate-50 transition-all shadow-sm">
                     <Download className="h-3.5 w-3.5 mr-2" />
                     Export
                   </button>

@@ -14,7 +14,9 @@ interface TaskCardProps {
 export default function TaskCard({ task, onStatusUpdate }: TaskCardProps) {
     const [isUpdating, setIsUpdating] = useState(false);
     const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+    const [dropdownAlign, setDropdownAlign] = useState<'left' | 'right'>('right');
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -63,7 +65,7 @@ export default function TaskCard({ task, onStatusUpdate }: TaskCardProps) {
     const statusConfig = getStatusConfig(task.status);
 
     return (
-        <div className="flex items-center justify-between p-6 border border-slate-200/60 bg-white rounded-[20px] hover:border-primary/30 hover:shadow-xl hover:shadow-slate-200/20 transition-all duration-300 group">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-5 md:p-6 border border-slate-200/60 bg-white rounded-[20px] hover:border-primary/30 hover:shadow-xl hover:shadow-slate-200/20 transition-all duration-300 group">
             <div className="flex items-center space-x-5 min-w-0 flex-1">
                 <div className={`p-3.5 rounded-xl ${statusConfig.bg} transition-colors duration-300`}>
                     <statusConfig.icon className={`h-5 w-5 ${statusConfig.text} stroke-[2px]`} />
@@ -93,10 +95,18 @@ export default function TaskCard({ task, onStatusUpdate }: TaskCardProps) {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-4 ml-6">
+            <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto sm:ml-6 mt-3 sm:mt-0 pt-3 sm:pt-0 border-t border-slate-100 sm:border-t-0 space-x-4">
                 <div className="relative" ref={dropdownRef}>
                     <button
-                        onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                        ref={buttonRef}
+                        onClick={() => {
+                            if (!showStatusDropdown && buttonRef.current) {
+                                const rect = buttonRef.current.getBoundingClientRect();
+                                const spaceOnRight = window.innerWidth - rect.right;
+                                setDropdownAlign(spaceOnRight >= 192 ? 'right' : 'left');
+                            }
+                            setShowStatusDropdown(!showStatusDropdown);
+                        }}
                         disabled={isUpdating}
                         className={`flex items-center space-x-3 px-4 py-2.5 text-[11px] font-bold rounded-xl transition-all border ${task.status === 'Completed'
                                 ? 'bg-emerald-50/50 text-emerald-600 border-emerald-100/50 hover:bg-emerald-50'
@@ -116,7 +126,11 @@ export default function TaskCard({ task, onStatusUpdate }: TaskCardProps) {
                     </button>
 
                     {showStatusDropdown && !isUpdating && (
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-slate-200/60 rounded-2xl shadow-2xl z-50 overflow-hidden p-1.5">
+                        <div
+                            className={`absolute top-full mt-2 w-48 bg-white border border-slate-200/60 rounded-2xl shadow-2xl z-50 overflow-hidden p-1.5 ${
+                                dropdownAlign === 'right' ? 'right-0' : 'left-0'
+                            }`}
+                        >
                             {['Pending', 'In Progress', 'Completed'].map((status) => (
                                 <button
                                     key={status}

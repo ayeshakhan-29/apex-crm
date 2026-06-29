@@ -46,13 +46,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     };
 
     return (
-        <div
-            className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-100/50 shadow-[4px_0_24px_rgba(0,0,0,0.02)] transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
-                } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col`}
-        >
-            <div className="flex items-center justify-between h-20 px-8 border-b border-slate-50">
+        <>
+            {isOpen && (
+                <div
+                    onClick={onClose}
+                    className="fixed inset-0 z-40 bg-slate-950/20 backdrop-blur-[2px] lg:hidden transition-opacity duration-300"
+                />
+            )}
+            <div
+                className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-teal-900/5 shadow-[8px_0_30px_rgba(15,23,42,0.035)] transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+                    } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col`}
+            >
+                <div className="flex items-center justify-between h-20 px-8 border-b border-teal-900/5">
                 <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <div className="w-8 h-8 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-teal-600/20">
                         <span className="text-[11px] font-bold text-white">
                             {user?.name ? user.name.charAt(0).toUpperCase() : 'R'}
                         </span>
@@ -80,7 +87,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                             href={item.href}
                             className={`flex items-center px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-300 relative group ${active
                                 ? 'sidebar-link-active text-primary'
-                                : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                                : 'text-slate-500 hover:text-slate-900 hover:bg-teal-50/50'
                                 }`}
                         >
                             <Icon
@@ -93,12 +100,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 })}
             </nav>
 
-            <div className="p-8 mt-auto border-t border-slate-50">
+            <div className="p-8 mt-auto border-t border-teal-900/5">
                 <div className="flex items-center space-x-3 text-slate-400">
                     <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
                     <span className="text-[10px] font-bold uppercase tracking-widest">Active</span>
                 </div>
             </div>
-        </div>
+            </div>
+        </>
     );
 }

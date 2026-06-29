@@ -34,7 +34,7 @@ export default function SettingsPage() {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <Header title="Control Panel" onMenuClick={() => setSidebarOpen(true)} />
 
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-12">
+                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-8 lg:p-12">
                     <div className="max-w-4xl mx-auto">
                         {/* Security Card */}
                         <div className="mb-10">
@@ -44,7 +44,7 @@ export default function SettingsPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                              {/* All Users */}
                              <Link href="/all-users">
-                                 <div className="glass-card p-8 group cursor-pointer">
+                                 <div className="glass-card p-6 md:p-8 group cursor-pointer">
                                      <div className="flex items-center space-x-4 mb-6">
                                          <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl group-hover:bg-primary group-hover:border-primary transition-all">
                                              <Users className="h-5 w-5 text-slate-600 group-hover:text-white transition-all" />
@@ -59,7 +59,7 @@ export default function SettingsPage() {
 
                              {/* Create User */}
                              <Link href="/create-user">
-                                 <div className="glass-card p-8 group cursor-pointer">
+                                 <div className="glass-card p-6 md:p-8 group cursor-pointer">
                                      <div className="flex items-center space-x-4 mb-6">
                                          <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl group-hover:bg-primary group-hover:border-primary transition-all">
                                              <UserPlus className="h-5 w-5 text-slate-600 group-hover:text-white transition-all" />
@@ -73,8 +73,8 @@ export default function SettingsPage() {
                              </Link>
 
                              {/* Logout Section */}
-                             <div className="bg-white rounded-xl border border-danger/20 p-8 md:col-span-2 mt-4">
-                                 <div className="flex items-center justify-between">
+                             <div className="bg-white rounded-xl border border-danger/20 p-6 md:p-8 md:col-span-2 mt-4">
+                                 <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center sm:justify-between">
                                      <div>
                                          <div className="flex items-center space-x-4 mb-3">
                                              <div className="p-3 bg-danger/5 rounded-lg">
@@ -89,7 +89,7 @@ export default function SettingsPage() {
                                      <button
                                          onClick={handleLogout}
                                          disabled={isLoggingOut}
-                                         className="px-8 py-3 bg-danger/10 hover:bg-danger text-danger hover:text-white text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-30 flex items-center space-x-3"
+                                         className="px-8 py-3 bg-danger/10 hover:bg-danger text-danger hover:text-white text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-30 flex items-center justify-center space-x-3 w-full sm:w-auto text-center"
                                      >
                                          {isLoggingOut ? (
                                              <>

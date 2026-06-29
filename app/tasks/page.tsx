@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, Filter, Search, Loader2 } from 'lucide-react';
+import { Plus, Filter, Search, Loader2, ChevronDown, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import PrivateRoute from '../components/auth/PrivateRoute';
@@ -15,12 +15,34 @@ export default function TasksPage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [filterStatus, setFilterStatus] = useState<string>('all');
     const [filterPriority, setFilterPriority] = useState<string>('all');
+    const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+    const [priorityDropdownOpen, setPriorityDropdownOpen] = useState(false);
+    const [statusDropdownAlign, setStatusDropdownAlign] = useState<'left' | 'right'>('left');
+    const [priorityDropdownAlign, setPriorityDropdownAlign] = useState<'left' | 'right'>('left');
+    const statusButtonRef = useRef<HTMLButtonElement>(null);
+    const priorityButtonRef = useRef<HTMLButtonElement>(null);
+    const statusDropdownRef = useRef<HTMLDivElement>(null);
+    const priorityDropdownRef = useRef<HTMLDivElement>(null);
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         fetchTasks();
+    }, []);
+
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) {
+                setStatusDropdownOpen(false);
+            }
+            if (priorityDropdownRef.current && !priorityDropdownRef.current.contains(event.target as Node)) {
+                setPriorityDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     const fetchTasks = async () => {
@@ -51,7 +73,7 @@ export default function TasksPage() {
                 <div className="flex-1 flex flex-col overflow-hidden">
                     <Header title="Operational Tasks" onMenuClick={() => setSidebarOpen(true)} />
 
-                    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#F8FAFC] p-8 md:p-12">
+                    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#F8FAFC] p-4 md:p-8 lg:p-12">
                         {/* Executive Filters and Actions */}
                         <div className="mb-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                             <div className="flex flex-wrap items-center gap-4">
@@ -63,27 +85,95 @@ export default function TasksPage() {
                                         className="pl-12 pr-6 py-3 text-[14px] font-medium search-input w-full md:w-80 bg-white border-slate-200 focus:border-primary/30 transition-all rounded-xl shadow-sm"
                                     />
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <select
-                                        value={filterStatus}
-                                        onChange={(e) => setFilterStatus(e.target.value)}
-                                        className="px-5 py-3 text-[13px] font-bold text-slate-700 bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-primary/5 transition-all appearance-none cursor-pointer min-w-[170px] shadow-sm"
-                                    >
-                                        <option value="all">All Statuses</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="In Progress">In Progress</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                    <select
-                                        value={filterPriority}
-                                        onChange={(e) => setFilterPriority(e.target.value)}
-                                        className="px-5 py-3 text-[13px] font-bold text-slate-700 bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-primary/5 transition-all appearance-none cursor-pointer min-w-[170px] shadow-sm"
-                                    >
-                                        <option value="all">All Priorities</option>
-                                        <option value="High">High Priority</option>
-                                        <option value="Medium">Medium Priority</option>
-                                        <option value="Low">Low Priority</option>
-                                    </select>
+                                <div className="flex items-center gap-3 flex-wrap">
+                                    {/* Status Dropdown */}
+                                    <div className="relative" ref={statusDropdownRef}>
+                                        <button
+                                            ref={statusButtonRef}
+                                            onClick={() => {
+                                                if (!statusDropdownOpen && statusButtonRef.current) {
+                                                    const rect = statusButtonRef.current.getBoundingClientRect();
+                                                    const spaceOnRight = window.innerWidth - rect.right;
+                                                    setStatusDropdownAlign(spaceOnRight >= 200 ? 'left' : 'right');
+                                                }
+                                                setStatusDropdownOpen(!statusDropdownOpen);
+                                                setPriorityDropdownOpen(false);
+                                            }}
+                                            className="flex items-center gap-3 px-5 py-3 text-[13px] font-bold text-slate-700 bg-white border border-slate-200 rounded-xl transition-all cursor-pointer min-w-[170px] shadow-sm"
+                                        >
+                                            <span className="flex-1 text-left">
+                                                {filterStatus === 'all' ? 'All Statuses' : filterStatus}
+                                            </span>
+                                            <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${statusDropdownOpen ? 'rotate-180' : ''}`} />
+                                        </button>
+                                        {statusDropdownOpen && (
+                                            <div className={`absolute top-full mt-1.5 w-52 bg-white border border-slate-200/60 rounded-2xl shadow-2xl z-50 overflow-hidden p-1.5 ${
+                                                statusDropdownAlign === 'left' ? 'left-0' : 'right-0'
+                                            }`}>
+                                                {[
+                                                    { value: 'all', label: 'All Statuses', icon: Filter },
+                                                    { value: 'Pending', label: 'Pending', icon: AlertCircle },
+                                                    { value: 'In Progress', label: 'In Progress', icon: Clock },
+                                                    { value: 'Completed', label: 'Completed', icon: CheckCircle },
+                                                ].map(({ value, label, icon: Icon }) => (
+                                                    <button
+                                                        key={value}
+                                                        onClick={() => { setFilterStatus(value); setStatusDropdownOpen(false); }}
+                                                        className={`w-full flex items-center gap-3 text-left px-4 py-3 text-[12px] font-bold hover:bg-slate-50 rounded-xl transition-all ${
+                                                            filterStatus === value ? 'text-primary bg-blue-50/40' : 'text-slate-600'
+                                                        }`}
+                                                    >
+                                                        <Icon className="h-4 w-4 opacity-60" />
+                                                        {label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Priority Dropdown */}
+                                    <div className="relative" ref={priorityDropdownRef}>
+                                        <button
+                                            ref={priorityButtonRef}
+                                            onClick={() => {
+                                                if (!priorityDropdownOpen && priorityButtonRef.current) {
+                                                    const rect = priorityButtonRef.current.getBoundingClientRect();
+                                                    const spaceOnRight = window.innerWidth - rect.right;
+                                                    setPriorityDropdownAlign(spaceOnRight >= 200 ? 'left' : 'right');
+                                                }
+                                                setPriorityDropdownOpen(!priorityDropdownOpen);
+                                                setStatusDropdownOpen(false);
+                                            }}
+                                            className="flex items-center gap-3 px-5 py-3 text-[13px] font-bold text-slate-700 bg-white border border-slate-200 rounded-xl transition-all cursor-pointer min-w-[170px] shadow-sm"
+                                        >
+                                            <span className="flex-1 text-left">
+                                                {filterPriority === 'all' ? 'All Priorities' : filterPriority + ' Priority'}
+                                            </span>
+                                            <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${priorityDropdownOpen ? 'rotate-180' : ''}`} />
+                                        </button>
+                                        {priorityDropdownOpen && (
+                                            <div className={`absolute top-full mt-1.5 w-52 bg-white border border-slate-200/60 rounded-2xl shadow-2xl z-50 overflow-hidden p-1.5 ${
+                                                priorityDropdownAlign === 'left' ? 'left-0' : 'right-0'
+                                            }`}>
+                                                {[
+                                                    { value: 'all', label: 'All Priorities' },
+                                                    { value: 'High', label: 'High Priority' },
+                                                    { value: 'Medium', label: 'Medium Priority' },
+                                                    { value: 'Low', label: 'Low Priority' },
+                                                ].map(({ value, label }) => (
+                                                    <button
+                                                        key={value}
+                                                        onClick={() => { setFilterPriority(value); setPriorityDropdownOpen(false); }}
+                                                        className={`w-full text-left px-4 py-3 text-[12px] font-bold hover:bg-slate-50 rounded-xl transition-all ${
+                                                            filterPriority === value ? 'text-primary bg-blue-50/40' : 'text-slate-600'
+                                                        }`}
+                                                    >
+                                                        {label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <button 

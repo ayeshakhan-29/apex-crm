@@ -1,27 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  /* High-Contrast Professional Palette */
-  --background: #f8fafc;
+  /* Professional CRM palette */
+  --background: #f4f7fb;
   /* Slate 50 - softer than pure white */
-  --foreground: #0f172a;
+  --foreground: #111827;
   /* Slate 900 */
 
   --surface-0: #ffffff;
-  --surface-1: #f1f5f9;
+  --surface-1: #eef3f8;
   /* Slate 100 */
-  --surface-2: #e2e8f0;
+  --surface-2: #dbe5ee;
   /* Slate 200 */
-  --surface-3: #cbd5e1;
+  --surface-3: #b9c8d6;
   /* Slate 300 */
 
-  --primary: #2563eb;
-  /* Modern Royal Blue */
-  --primary-hover: #1d4ed8;
+  --primary: #0f766e;
+  /* Deep teal accent */
+  --primary-hover: #0d5f59;
   --primary-foreground: #ffffff;
 
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
+  --border: #dbe5ee;
+  --border-strong: #b9c8d6;
 
   --success: #10b981;
   --danger: #ef4444;
@@ -30,13 +30,13 @@
   /* Sidebar Specific */
   --sidebar-bg: #ffffff;
   --sidebar-foreground: #64748b;
-  --sidebar-active: #2563eb;
+  --sidebar-active: #0f766e;
   --sidebar-border: #f1f5f9;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 8px 0 rgb(15 118 110 / 0.04);
+  --shadow-md: 0 10px 24px -18px rgb(17 24 39 / 0.34), 0 3px 10px -8px rgb(15 118 110 / 0.25);
+  --shadow-lg: 0 20px 38px -24px rgb(17 24 39 / 0.42), 0 8px 18px -18px rgb(15 118 110 / 0.34);
 }
 
 @theme inline {
@@ -75,7 +75,7 @@ body {
 
 .glass-card:hover {
   box-shadow: var(--shadow-md);
-  border-color: var(--primary);
+  border-color: rgba(15, 118, 110, 0.42);
   transform: translateY(-2px);
 }
 
@@ -95,9 +95,9 @@ body {
 /* Sidebar Nav Link */
 .sidebar-link-active {
   color: var(--primary) !important;
-  background: #f0f7ff;
-  /* Very subtle blue tint */
-  box-shadow: inset 4px 0 0 -2px var(--primary);
+  background: #eaf7f4;
+  /* Subtle active tint */
+  box-shadow: inset 4px 0 0 -2px var(--primary), 0 6px 16px -14px rgba(15, 118, 110, 0.8);
 }
 
 /* Scrollbar Refinement */
@@ -111,7 +111,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--surface-3);
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -139,13 +139,13 @@ body {
 .search-input {
   background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   transition: all 0.2s ease;
   box-shadow: var(--shadow-sm);
 }
 
 .search-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1), var(--shadow-sm);
+  border-color: rgba(15, 118, 110, 0.42);
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.11), var(--shadow-sm);
   outline: none;
 }

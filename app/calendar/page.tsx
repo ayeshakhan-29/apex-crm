@@ -311,8 +311,9 @@ export default function CalendarPage() {
             <div className="grid grid-cols-7 text-black gap-1">
                 {/* Day headers */}
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                    <div key={day} className="p-3 text-center text-[11px] font-bold text-slate-500 bg-slate-50 border border-border">
-                        {day}
+                    <div key={day} className="p-1 md:p-3 text-center text-[11px] font-bold text-slate-500 bg-slate-50 border border-border">
+                        <span className="hidden md:inline">{day}</span>
+                        <span className="md:hidden">{day[0]}</span>
                     </div>
                 ))}
                 
@@ -328,16 +329,18 @@ export default function CalendarPage() {
                             key={index}
                             onClick={() => setSelectedDate(day)}
                             className={`
-                                min-h-[100px] p-2 border border-border cursor-pointer hover:bg-slate-50 transition-all
+                                min-h-[55px] md:min-h-[100px] p-1 md:p-2 border border-border cursor-pointer hover:bg-slate-50 transition-all
                                 ${!isCurrentMonth ? 'text-slate-200 bg-slate-50/30' : ''}
                                 ${isToday ? 'bg-blue-50/30 border-primary/20' : ''}
                                 ${isSelected ? 'ring-1 ring-primary bg-blue-50/20' : ''}
                             `}
                         >
-                            <div className={`text-xs font-bold mb-3 ${isToday ? 'text-primary' : 'text-slate-400'}`}>
+                            <div className={`text-xs font-bold mb-1.5 md:mb-3 ${isToday ? 'text-primary' : 'text-slate-400'}`}>
                                 {day.getDate()}
                             </div>
-                            <div className="space-y-1">
+                            
+                            {/* Desktop text badges */}
+                            <div className="hidden md:block space-y-1">
                                 {dayMeetings.slice(0, 2).map((meeting, idx) => (
                                     <div
                                         key={idx}
@@ -347,12 +350,21 @@ export default function CalendarPage() {
                                         {meeting.summary}
                                     </div>
                                 ))}
-                                {dayMeetings.length > 2 && (
-                                    <div className="text-xs text-slate-500">
-                                        +{dayMeetings.length - 2} more
-                                    </div>
-                                )}
                             </div>
+                            
+                            {/* Mobile dot indicators */}
+                            <div className="flex justify-center flex-wrap gap-0.5 mt-0.5 md:hidden">
+                                {dayMeetings.slice(0, 3).map((_, idx) => (
+                                    <div key={idx} className="w-1 h-1 rounded-full bg-primary" />
+                                ))}
+                            </div>
+
+                            {dayMeetings.length > 2 && (
+                                <div className="text-[9px] md:text-xs text-slate-500 text-center md:text-left mt-1">
+                                    <span className="hidden md:inline">+{dayMeetings.length - 2} more</span>
+                                    <span className="md:hidden">+{dayMeetings.length - 2}</span>
+                                </div>
+                            )}
                         </div>
                     );
                 })}
@@ -368,7 +380,7 @@ export default function CalendarPage() {
                 <div className="flex-1 flex flex-col overflow-hidden">
                     <Header title="Calendar" onMenuClick={() => setSidebarOpen(true)} />
 
-                    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white p-12">
+                    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white p-4 md:p-8 lg:p-12">
                         {/* Google Connection Status */}
                         <div className="mb-6">
                             <GoogleConnectionStatus 
@@ -384,9 +396,9 @@ export default function CalendarPage() {
                         ) : (
                             <>
                                 {/* Calendar Header */}
-                                <div className="bg-white rounded-xl border border-border p-8 mb-8">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center space-x-4">
+                                <div className="bg-white rounded-xl border border-border p-4 md:p-8 mb-8">
+                            <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6">
+                                <div className="flex flex-wrap items-center gap-4">
                                     <div className="flex items-center space-x-2">
                                         <button
                                             onClick={() => navigateDate('prev')}
@@ -420,21 +432,21 @@ export default function CalendarPage() {
                                     </button>
                                 </div>
 
-                                <div className="flex items-center space-x-3">
+                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full xl:w-auto">
                                     {/* Search */}
-                                    <div className="relative">
+                                    <div className="relative w-full sm:w-64">
                                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
                                         <input
                                             type="text"
                                             placeholder="Search schedule..."
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
-                                            className="pl-10 pr-4 py-2.5 text-xs font-medium search-input focus:bg-white w-64"
+                                            className="pl-10 pr-4 py-2.5 text-xs font-medium search-input focus:bg-white w-full"
                                         />
                                     </div>
 
                                     {/* View Mode Selector */}
-                                    <div className="flex bg-slate-50 border border-border rounded-lg p-1">
+                                    <div className="flex bg-slate-50 border border-border rounded-lg p-1 justify-center sm:justify-start">
                                         {(['month', 'list'] as ViewMode[]).map((mode) => (
                                             <button
                                                 key={mode}
@@ -453,7 +465,7 @@ export default function CalendarPage() {
                                     {/* Create Meeting Button */}
                                     <button
                                         onClick={() => setShowCreateModal(true)}
-                                        className="inline-flex items-center px-8 py-2.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-hover transition-all shadow-lg shadow-blue-500/10"
+                                        className="inline-flex items-center justify-center px-8 py-2.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-hover transition-all shadow-lg shadow-blue-500/10 w-full sm:w-auto"
                                     >
                                         <Plus className="h-4 w-4 mr-2" />
                                         Create Event

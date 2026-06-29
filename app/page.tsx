@@ -145,7 +145,7 @@ export default function Dashboard() {
         <div className="flex-1 flex flex-col overflow-hidden">
           <Header title="Dashboard" onMenuClick={() => setSidebarOpen(true)} />
 
-          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-12">
+          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-8 lg:p-12">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
               {kpisLoading ? (
@@ -304,7 +304,7 @@ export default function Dashboard() {
             </div>
 
             {/* Performance Metrics & Upcoming Tasks */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 [@media(min-width:1700px)]:grid-cols-2 gap-8">
               {/* Performance Metrics */}
               <div className="glass-card p-8">
                 <div className="flex items-center justify-between mb-10">

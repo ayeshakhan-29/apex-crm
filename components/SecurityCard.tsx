@@ -121,8 +121,8 @@ export default function SecurityCard() {
     };
 
     return (
-        <div className="glass-card p-8">
-            <div className="flex items-center justify-between mb-10">
+        <div className="glass-card p-6 md:p-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
                 <div className="flex items-center space-x-4">
                     <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
                         <Shield className="h-5 w-5 text-slate-600 stroke-[2px]" />
@@ -135,7 +135,7 @@ export default function SecurityCard() {
                 {!isEditing && (
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary hover:text-white border border-primary rounded-xl transition-all shadow-sm"
+                        className="px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary hover:text-white border border-primary rounded-xl transition-all shadow-sm w-full sm:w-auto text-center"
                     >
                         Modify Profile
                     </button>

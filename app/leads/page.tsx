@@ -1,23 +1,38 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Search, Filter, Plus, Loader2, AlertCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Search, Filter, Plus, Loader2, AlertCircle, ChevronDown, FileSpreadsheet } from 'lucide-react';
 import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
+import ExcelLeadImport from '@/components/ExcelLeadImport';
 import { getLeads, Lead } from '../services/leadsService';
 
 export default function LeadsPage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [filterStatus, setFilterStatus] = useState<string>('all');
+    const [stageDropdownOpen, setStageDropdownOpen] = useState(false);
+    const [stageDropdownAlign, setStageDropdownAlign] = useState<'left' | 'right'>('left');
+    const stageButtonRef = useRef<HTMLButtonElement>(null);
+    const stageDropdownRef = useRef<HTMLDivElement>(null);
     const [leads, setLeads] = useState<Lead[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [showImport, setShowImport] = useState(false);
 
-    // Fetch leads from API
+    // Close stage dropdown when clicking outside
     useEffect(() => {
-        const fetchLeads = async () => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (stageDropdownRef.current && !stageDropdownRef.current.contains(event.target as Node)) {
+                setStageDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const fetchLeads = async () => {
             try {
                 setLoading(true);
                 setError(null);
@@ -31,6 +46,8 @@ export default function LeadsPage() {
             }
         };
 
+    // Fetch leads from API
+    useEffect(() => {
         fetchLeads();
     }, []);
 
@@ -43,49 +60,90 @@ export default function LeadsPage() {
     });
 
     return (
+        <>
         <div className="flex h-screen bg-background">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <div className="flex-1 flex flex-col overflow-hidden">
                 <Header title="Leads Directory" onMenuClick={() => setSidebarOpen(true)} />
 
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-12">
+                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-8 lg:p-12">
                     {/* Filters and Actions */}
                     <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                        <div className="flex items-center space-x-4">
-                            <div className="relative text-black">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+                            <div className="relative text-black w-full sm:w-auto">
                                 <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                                 <input
                                     type="text"
                                     placeholder="Search leads..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10 pr-4 py-2.5 text-xs font-semibold search-input w-72"
+                                    className="pl-10 pr-4 py-2.5 text-xs font-semibold search-input w-full sm:w-72"
                                 />
                             </div>
-                            <select
-                                value={filterStatus}
-                                onChange={(e) => setFilterStatus(e.target.value)}
-                                className="px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest search-input bg-white appearance-none min-w-[160px]"
-                            >
-                                <option value="all">Stage: All</option>
-                                <option value="New">New</option>
-                                <option value="Incoming">Incoming</option>
-                                <option value="Contacted">Contacted</option>
-                                <option value="Qualified">Qualified</option>
-                                <option value="Proposal">Second Wing</option>
-                                <option value="Second Wing">Second Wing</option>
-                                <option value="Won">Won</option>
-                                <option value="Lost">Lost</option>
-                            </select>
+                            {/* Custom Stage Dropdown */}
+                            <div className="relative w-full sm:w-auto" ref={stageDropdownRef}>
+                                <button
+                                    ref={stageButtonRef}
+                                    onClick={() => {
+                                        if (!stageDropdownOpen && stageButtonRef.current) {
+                                            const rect = stageButtonRef.current.getBoundingClientRect();
+                                            const spaceOnRight = window.innerWidth - rect.left;
+                                            setStageDropdownAlign(spaceOnRight >= 200 ? 'left' : 'right');
+                                        }
+                                        setStageDropdownOpen(!stageDropdownOpen);
+                                    }}
+                                    className="flex items-center justify-between gap-3 px-4 py-2.5 text-[11px] font-bold search-input bg-white w-full sm:min-w-[160px]"
+                                >
+                                    <span className="text-slate-700">
+                                        {filterStatus === 'all' ? 'Stage: All' : filterStatus}
+                                    </span>
+                                    <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${stageDropdownOpen ? 'rotate-180' : ''}`} />
+                                </button>
+
+                                {stageDropdownOpen && (
+                                    <div className={`absolute top-full mt-1.5 w-48 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden p-1.5 ${
+                                        stageDropdownAlign === 'left' ? 'left-0' : 'right-0'
+                                    }`}>
+                                        {[
+                                            { value: 'all', label: 'Stage: All' },
+                                            { value: 'New', label: 'New' },
+                                            { value: 'Incoming', label: 'Incoming' },
+                                            { value: 'Contacted', label: 'Contacted' },
+                                            { value: 'Qualified', label: 'Qualified' },
+                                            { value: 'Proposal', label: 'Second Wing' },
+                                            { value: 'Second Wing', label: 'Second Wing (Alt)' },
+                                            { value: 'Won', label: 'Won' },
+                                            { value: 'Lost', label: 'Lost' },
+                                        ].map((opt) => (
+                                            <button
+                                                key={opt.value}
+                                                onClick={() => { setFilterStatus(opt.value); setStageDropdownOpen(false); }}
+                                                className={`w-full text-left px-4 py-2.5 text-[11px] font-bold hover:bg-slate-50 rounded-xl transition-all ${
+                                                    filterStatus === opt.value ? 'text-primary bg-blue-50/40' : 'text-slate-600'
+                                                }`}
+                                            >
+                                                {opt.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <Link
-                            href="/add-lead"
-                            className="flex items-center px-6 py-2.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-hover transition-all shadow-lg shadow-blue-500/20"
-                        >
-                            <Plus className="h-4 w-4 mr-2" />
-                            Add Lead
-                        </Link>
+                                href="/add-lead"
+                                className="flex items-center justify-center px-6 py-2.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-hover transition-all shadow-lg shadow-blue-500/20 w-full sm:w-auto text-center"
+                            >
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Lead
+                            </Link>
+                            <button
+                                onClick={() => setShowImport(true)}
+                                className="flex items-center justify-center gap-2 px-6 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-500/20 w-full sm:w-auto"
+                            >
+                                <FileSpreadsheet className="h-4 w-4" />
+                                Import Excel
+                            </button>
                     </div>
 
                     {/* Loading State */}
@@ -134,7 +192,7 @@ export default function LeadsPage() {
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center justify-between mt-6 pt-5 border-t border-slate-50">
-                                                    <span className={`px-2.5 py-1 text-[9px] font-bold rounded-full uppercase tracking-wider ${lead.stage === 'Won' ? 'bg-green-50 text-green-600 border border-green-100' :
+                                                    <span className={`px-2.5 py-1 text-[9px] font-bold rounded-full tracking-wider ${lead.stage === 'Won' ? 'bg-green-50 text-green-600 border border-green-100' :
                                                             lead.stage === 'Lost' ? 'bg-red-50 text-red-600 border border-red-100' :
                                                                 lead.stage === 'Incoming' ? 'bg-blue-50 text-blue-600 border border-blue-100' :
                                                                     lead.stage === 'Contacted' ? 'bg-blue-50 text-blue-600 border border-blue-100' :
@@ -142,7 +200,7 @@ export default function LeadsPage() {
                                                         }`}>
                                                         {lead.stage}
                                                     </span>
-                                                    <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">{lead.source}</span>
+                                                    <span className="text-[9px] text-slate-400 font-bold">{lead.source}</span>
                                                 </div>
                                             </div>
                                         </Link>
@@ -154,5 +212,16 @@ export default function LeadsPage() {
                 </main>
             </div>
         </div>
+
+        {showImport && (
+            <ExcelLeadImport
+                onClose={() => setShowImport(false)}
+                onImportComplete={() => {
+                    setShowImport(false);
+                    fetchLeads();
+                }}
+            />
+        )}
+        </>
     );
 }

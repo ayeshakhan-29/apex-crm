@@ -82,7 +82,7 @@ export default function LoginPage() {
                 <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(0, 102, 255, 0.05) 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
             </div>
 
-            <div className="max-w-md w-full space-y-10 bg-white p-10 rounded-3xl border border-slate-200 shadow-[0_20px_50px_rgba(0,0,0,0.08)] z-10 transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
+            <div className="max-w-md w-full space-y-10 bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-[0_20px_50px_rgba(0,0,0,0.08)] z-10 transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
                 <div className="text-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-50 border border-slate-100 rounded-2xl mb-8 shadow-inner transition-transform duration-500 hover:scale-105 group">
                         <div className="w-10 h-10 bg-[#0066FF] rounded-xl shadow-[0_8px_20px_rgba(0,102,255,0.3)] transition-all duration-500"></div>
