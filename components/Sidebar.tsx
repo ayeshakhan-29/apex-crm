@@ -65,7 +65,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         </span>
                     </div>
                     <div className="flex flex-col">
-                        <h1 className="text-sm font-bold text-slate-900 tracking-tight">{user?.name || 'Rahbaan'}</h1>
+                        <h1 className="text-sm font-bold text-slate-900 tracking-tight">{user?.name || 'Apex'}</h1>
                         <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">CRM Console</span>
                     </div>
                 </div>

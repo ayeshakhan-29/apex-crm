@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
@@ -17,7 +18,6 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
 
-    // Redirect if already authenticated
     useEffect(() => {
         if (isAuthenticated) {
             router.push('/');
@@ -29,7 +29,6 @@ export default function LoginPage() {
             ...formData,
             [e.target.name]: e.target.value,
         });
-        // Clear error for this field
         if (errors[e.target.name]) {
             setErrors({ ...errors, [e.target.name]: '' });
         }
@@ -64,134 +63,144 @@ export default function LoginPage() {
                 email: formData.email,
                 password: formData.password,
             });
-
-            // Redirect to dashboard on success
             router.push('/');
         } catch (err) {
-            // Error is handled by AuthContext
             console.error('Login failed:', err);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-            {/* Background elements */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[#0066FF] opacity-[0.05] blur-[120px]"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#0066FF] opacity-[0.03] blur-[120px]"></div>
-                <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(0, 102, 255, 0.05) 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
-            </div>
+        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-10 sm:px-6 lg:px-8">
+            <div className="absolute inset-0 z-0 pointer-events-none bg-[linear-gradient(rgba(15,118,110,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(15,118,110,0.045)_1px,transparent_1px)] bg-[size:36px_36px]" />
 
-            <div className="max-w-md w-full space-y-10 bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-[0_20px_50px_rgba(0,0,0,0.08)] z-10 transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
-                <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-50 border border-slate-100 rounded-2xl mb-8 shadow-inner transition-transform duration-500 hover:scale-105 group">
-                        <div className="w-10 h-10 bg-[#0066FF] rounded-xl shadow-[0_8px_20px_rgba(0,102,255,0.3)] transition-all duration-500"></div>
+            <div className="relative z-10 w-full max-w-5xl overflow-hidden rounded-2xl border border-teal-900/10 bg-white shadow-[0_24px_70px_-42px_rgba(15,23,42,0.65)] lg:grid lg:grid-cols-[0.9fr_1.1fr]">
+                <div className="hidden flex-col justify-between bg-slate-950 px-10 py-10 text-white lg:flex">
+                    <div>
+                        <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary shadow-lg shadow-teal-900/30">
+                            <span className="text-sm font-bold">R</span>
+                        </div>
+                        <h1 className="mt-8 text-2xl font-bold tracking-tight">Apex CRM</h1>
+                        <p className="mt-3 max-w-xs text-sm font-medium leading-6 text-slate-300">
+                            Manage leads, tasks, meetings, and pipeline activity from one focused workspace.
+                        </p>
                     </div>
-                    <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
-                        Welcome Back
-                    </h2>
-                    <p className="text-sm text-slate-500 mt-3 font-medium">
-                        Access your CRM workspace
-                    </p>
+
+                    <div className="grid grid-cols-2 gap-3 text-xs font-bold text-slate-300">
+                        <div className="rounded-xl border border-white/10 bg-white/5 p-4">Pipeline</div>
+                        <div className="rounded-xl border border-white/10 bg-white/5 p-4">Tasks</div>
+                        <div className="rounded-xl border border-white/10 bg-white/5 p-4">Leads</div>
+                        <div className="rounded-xl border border-white/10 bg-white/5 p-4">Calendar</div>
+                    </div>
                 </div>
 
-                <form className="mt-10 space-y-7" onSubmit={handleSubmit}>
-                    {authError && (
-                        <div className="rounded-xl bg-red-50 p-4 border border-red-100 animate-in fade-in slide-in-from-top-2 duration-300">
-                            <p className="text-xs text-red-600 font-semibold text-center uppercase tracking-wider">{authError}</p>
+                <div className="space-y-9 p-6 sm:p-10 lg:p-12">
+                    <div>
+                        <div className="mb-7 inline-flex items-center rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary lg:hidden">
+                            Apex CRM
                         </div>
-                    )}
+                        <h2 className="text-3xl font-bold tracking-tight text-slate-950">Welcome back</h2>
+                        <p className="mt-3 text-sm font-medium text-slate-500">Sign in to continue to your CRM workspace.</p>
+                    </div>
 
-                    <div className="space-y-6">
-                        <div className="group">
-                            <label htmlFor="email" className="block text-[11px] font-bold text-slate-500 mb-2 uppercase tracking-widest transition-colors group-focus-within:text-[#0066FF]">
-                                Email Address
-                            </label>
-                            <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className={`w-full px-5 py-4 text-sm font-medium bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 transition-all duration-300 outline-none ${errors.email ? 'border-red-300 focus:border-red-500' : 'focus:border-[#0066FF] focus:bg-white focus:ring-4 focus:ring-[#0066FF]/5'
-                                    }`}
-                                placeholder="name@company.com"
-                            />
-                            {errors.email && <p className="mt-2 text-[10px] text-red-500 font-bold uppercase tracking-widest">{errors.email}</p>}
-                        </div>
+                    <form className="space-y-7" onSubmit={handleSubmit}>
+                        {authError && (
+                            <div className="rounded-xl border border-red-100 bg-red-50 p-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                                <p className="text-center text-xs font-semibold uppercase tracking-wider text-red-600">{authError}</p>
+                            </div>
+                        )}
 
-                        <div className="group">
-                            <div className="flex items-center justify-between mb-2">
-                                <label htmlFor="password" className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest transition-colors group-focus-within:text-[#0066FF]">
-                                    Password
+                        <div className="space-y-6">
+                            <div className="group">
+                                <label htmlFor="email" className="mb-2 block text-[11px] font-bold uppercase tracking-widest text-slate-500 transition-colors group-focus-within:text-primary">
+                                    Email Address
                                 </label>
-                                <a href="#" className="text-[10px] font-bold text-[#0066FF] hover:text-blue-700 transition-colors uppercase tracking-widest">
-                                    Forgot?
-                                </a>
+                                <div className="relative">
+                                    <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                    <input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        autoComplete="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className={`w-full rounded-xl border bg-slate-50 py-4 pl-11 pr-5 text-sm font-medium text-slate-900 placeholder-slate-400 outline-none transition-all duration-300 ${errors.email ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10'}`}
+                                        placeholder="name@company.com"
+                                    />
+                                </div>
+                                {errors.email && <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-red-500">{errors.email}</p>}
                             </div>
-                            <div className="relative">
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    autoComplete="current-password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className={`w-full px-5 py-4 text-sm font-medium bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 transition-all duration-300 outline-none ${errors.password ? 'border-red-300 focus:border-red-500' : 'focus:border-[#0066FF] focus:bg-white focus:ring-4 focus:ring-[#0066FF]/5'
-                                        }`}
-                                    placeholder="••••••••"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute inset-y-0 right-0 pr-5 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
-                                >
-                                    <span className="text-[10px] font-bold uppercase tracking-widest">{showPassword ? 'Hide' : 'Show'}</span>
-                                </button>
+
+                            <div className="group">
+                                <div className="mb-2 flex items-center justify-between">
+                                    <label htmlFor="password" className="block text-[11px] font-bold uppercase tracking-widest text-slate-500 transition-colors group-focus-within:text-primary">
+                                        Password
+                                    </label>
+                                    <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-primary transition-colors hover:text-primary-hover">
+                                        Forgot?
+                                    </a>
+                                </div>
+                                <div className="relative">
+                                    <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        autoComplete="current-password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        className={`w-full rounded-xl border bg-slate-50 py-4 pl-11 pr-14 text-sm font-medium text-slate-900 placeholder-slate-400 outline-none transition-all duration-300 ${errors.password ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10'}`}
+                                        placeholder="Enter password"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute inset-y-0 right-0 flex items-center pr-5 text-slate-400 transition-colors hover:text-slate-600"
+                                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                    >
+                                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </button>
+                                </div>
+                                {errors.password && <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-red-500">{errors.password}</p>}
                             </div>
-                            {errors.password && <p className="mt-2 text-[10px] text-red-500 font-bold uppercase tracking-widest">{errors.password}</p>}
                         </div>
-                    </div>
 
-                    <div className="flex items-center">
-                        <label className="flex items-center cursor-pointer group">
-                            <div className="relative">
-                                <input
-                                    type="checkbox"
-                                    className="sr-only"
-                                    checked={rememberMe}
-                                    onChange={(e) => setRememberMe(e.target.checked)}
-                                />
-                                <div className={`w-10 h-5 rounded-full transition-colors duration-300 ${rememberMe ? 'bg-[#0066FF]' : 'bg-slate-200'}`}></div>
-                                <div className={`absolute left-1 top-1 w-3 h-3 rounded-full bg-white shadow-sm transition-transform duration-300 ${rememberMe ? 'translate-x-5' : ''}`}></div>
-                            </div>
-                            <span className="ml-3 text-xs font-bold text-slate-500 uppercase tracking-widest group-hover:text-slate-700 transition-colors">Remember me</span>
-                        </label>
-                    </div>
+                        <div className="flex items-center">
+                            <label className="group flex cursor-pointer items-center">
+                                <div className="relative">
+                                    <input
+                                        type="checkbox"
+                                        className="sr-only"
+                                        checked={rememberMe}
+                                        onChange={(e) => setRememberMe(e.target.checked)}
+                                    />
+                                    <div className={`h-5 w-10 rounded-full transition-colors duration-300 ${rememberMe ? 'bg-primary' : 'bg-slate-200'}`} />
+                                    <div className={`absolute left-1 top-1 h-3 w-3 rounded-full bg-white shadow-sm transition-transform duration-300 ${rememberMe ? 'translate-x-5' : ''}`} />
+                                </div>
+                                <span className="ml-3 text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors group-hover:text-slate-700">Remember me</span>
+                            </label>
+                        </div>
 
-                    <div className="pt-2">
                         <button
                             type="submit"
                             disabled={loading}
-                            className="group relative w-full flex justify-center py-4 px-6 border border-transparent text-xs font-bold rounded-xl text-white bg-[#0066FF] hover:bg-[#0052cc] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0066FF] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_10px_20px_-5px_rgba(0,102,255,0.4)] hover:shadow-[0_15px_25px_-5px_rgba(0,102,255,0.5)] hover:-translate-y-0.5 active:translate-y-0"
+                            className="group relative flex w-full justify-center rounded-xl border border-transparent bg-primary px-6 py-4 text-xs font-bold text-white shadow-[0_14px_28px_-14px_rgba(15,118,110,0.8)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_18px_34px_-16px_rgba(15,118,110,0.9)] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             {loading ? (
                                 <span className="flex items-center">
-                                    <div className="animate-spin -ml-1 mr-3 h-4 w-4 border-2 border-white/20 border-b-white rounded-full"></div>
+                                    <span className="-ml-1 mr-3 h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-b-white" />
                                     VERIFYING...
                                 </span>
                             ) : (
-                                <span className="uppercase tracking-[0.2em]">Sign In to System</span>
+                                <span className="uppercase tracking-[0.2em]">Sign In</span>
                             )}
                         </button>
-                    </div>
-                </form>
+                    </form>
 
-                <div className="text-center pt-4">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
-                        New to Rahban CRM? <Link href="/register" className="text-[#0066FF] hover:text-blue-700 transition-all border-b border-[#0066FF]/30 hover:border-[#0066FF]">Create Account</Link>
-                    </p>
+                    <div className="text-center">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                            New to Apex CRM? <Link href="/register" className="border-b border-primary/30 text-primary transition-all hover:border-primary hover:text-primary-hover">Create Account</Link>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
